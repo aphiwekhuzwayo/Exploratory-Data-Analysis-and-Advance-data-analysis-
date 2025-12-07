@@ -1,0 +1,47 @@
+/*
+=============================================================
+Change over time analysis
+=============================================================
+Script Purpose:
+    This script is to analyze how a measure changes over time which will help us track
+	trends and identify seasonality in our data
+*/
+
+USE DataWarehouseAnalytics;
+
+SELECT
+	YEAR(order_date) AS Order_year,
+	MONTH(order_date) AS Order_month,
+	SUM(sales_amount) AS Total_sales,
+	COUNT(DISTINCT customer_key) AS Total_customers,
+	SUM(quantity) AS Total_quantity
+FROM
+	gold.fact_sales
+WHERE
+	MONTH(order_date) IS NOT NULL AND MONTH(order_date) = 12
+GROUP BY 
+	YEAR(order_date),
+	MONTH(order_date)
+ORDER BY 
+	YEAR(order_date),
+	MONTH(order_date)
+
+-- HOW MANY NEW CUSTOMERS WERE ADDED EACH YEAR
+SELECT
+	YEAR,
+	Customers,
+	ISNULL(LAG(SSD) OVER (ORDER BY YEAR),Customers) AS NeT_customer_change
+FROM(
+SELECT
+	YEAR(order_date) AS YEAR,
+	COUNT(DISTINCT customer_key) as Customers,
+	LEAD(COUNT(DISTINCT customer_key)) OVER (ORDER BY YEAR(order_date)) - COUNT(DISTINCT customer_key) AS SSD
+FROM
+	gold.fact_sales
+WHERE
+	YEAR(order_date) IS NOT NULL
+GROUP BY 
+	YEAR(order_date)
+)T1
+ORDER BY
+	YEAR;
