@@ -1,0 +1,95 @@
+/*
+=====================================================================
+Measures Exploration
+=====================================================================
+Script Purpose:
+	This script helps us to calculate the key metric of the business
+	highest level of aggregation | lowest level of aggregation
+*/
+
+--Find the Total sales
+SELECT
+	SUM(sales_amount) AS Total_sales
+FROM
+	gold.fact_sales
+
+--Find how many items were sold 
+SELECT
+	SUM(quantity) AS Total_items_sold
+FROM
+	gold.fact_sales
+
+--Find the average selling price
+SELECT
+	AVG(price) as avg_price
+FROM
+	gold.fact_sales
+
+-- Find the total number of orders
+SELECT
+	COUNT(DISTINCT order_number) AS Total_number_of_orders -- Make use of distinct as some items are in the same order so share the same order number
+FROM
+	gold.fact_sales
+
+--Find the total number of product
+SELECT
+	COUNT(DISTINCT product_name) AS Total_number_of_products
+FROM
+	gold.dim_products
+
+--Find the total number of customers
+SELECT
+	COUNT(customer_key) AS Total_customers
+FROM
+	gold.dim_customers
+
+--Find the total number of customers who have place orders
+SELECT
+	COUNT(DISTINCT customer_key) AS total_customers_with_orders
+FROM
+	gold.fact_sales
+
+-- Generating a report to show all key metrics of the business
+SELECT
+	'Total_sales' AS Measure_name,
+	SUM(sales_amount) AS Measure_value
+FROM
+	gold.fact_sales
+UNION ALL
+SELECT
+	'Total_items_sold',
+	SUM(quantity) 
+FROM
+	gold.fact_sales
+UNION ALL
+SELECT
+	'avg_price',
+	AVG(price) 
+FROM
+	gold.fact_sales
+UNION ALL
+SELECT
+	'Total_number_of_orders' ,
+	COUNT(DISTINCT order_number) 
+FROM
+	gold.fact_sales
+UNION ALL
+SELECT
+	'Total_number_of_products',
+	COUNT(DISTINCT product_name) 
+FROM
+	gold.dim_products
+UNION ALL
+SELECT
+	'Total_customers',
+	COUNT(customer_key) 
+FROM
+	gold.dim_customers
+UNION ALL
+SELECT
+	'total_customers_with_orders',
+	COUNT(DISTINCT customer_key) AS total_customers_with_orders
+FROM
+	gold.fact_sales
+ORDER BY
+	Measure_value DESC
