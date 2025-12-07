@@ -1,0 +1,29 @@
+/*
+===================================================================================
+Cumulative analysis
+===================================================================================
+Script Purpose:
+    This script is to aggregate the data progressively over time which will help us
+	to understand whether our business is growingor declinning
+*/
+
+--Calculate the total sales per month and the running total of sales over time
+SELECT
+	YEAR,
+	MONTH,
+	Total_sales,
+	SUM(Total_sales) OVER(ORDER BY YEAR,MONTH) AS Running_total_sales
+FROM(
+SELECT
+	YEAR(order_date) AS YEAR,
+	MONTH(order_date) AS MONTH,
+	SUM(sales_amount) AS Total_sales
+FROM
+	gold.fact_sales
+WHERE
+	order_date IS NOT NULL
+GROUP BY 
+	YEAR(order_date),
+	MONTH(order_date)
+
+)T1
