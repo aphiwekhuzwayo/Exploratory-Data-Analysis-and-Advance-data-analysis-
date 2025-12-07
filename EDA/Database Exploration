@@ -1,0 +1,13 @@
+-- Exploring all objects in the database
+SELECT
+	*
+FROM
+	INFORMATION_SCHEMA.TABLES
+
+-- exploring all columuns in the database
+SELECT
+	*
+FROM
+	INFORMATION_SCHEMA.COLUMNS
+WHERE
+	TABLE_NAME = 'dim_customers' -- This is to target a specific table you want to see
