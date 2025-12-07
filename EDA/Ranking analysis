@@ -1,0 +1,72 @@
+/*
+====================================================================
+Ranking analysis
+====================================================================
+Script Purpose:
+    This script creates an order the values of dimensions by measure.
+	Top N performers | bottom N performers
+*/
+
+--Which 5 products generate the highest revenue
+SELECT
+	product_name,
+	highest_revenue
+FROM(
+SELECT
+	P.product_name,
+	SUM(sales_amount) AS highest_revenue,
+	ROW_NUMBER() OVER(ORDER BY SUM(sales_amount) DESC) AS FLAG 
+FROM
+	gold.fact_sales AS S
+LEFT JOIN
+	gold.dim_products AS P
+ON 
+	S.product_key = P.product_key
+GROUP BY 
+	P.product_name
+)T1
+WHERE
+	FLAG <=5
+
+--Which 5 products generate the least revenue
+SELECT TOP 5
+	P.product_name,
+	SUM(sales_amount) AS highest_revenue,
+	ROW_NUMBER() OVER(ORDER BY SUM(sales_amount) ASC) AS FLAG 
+FROM
+	gold.fact_sales AS S
+LEFT JOIN
+	gold.dim_products AS P
+ON 
+	S.product_key = P.product_key
+GROUP BY 
+	P.product_name
+
+-- Find the Top 10 customers who have generated the highest revenue and 3 customers with the fewest orders placed
+SELECT TOP 10
+	C.customer_key,
+	SUM(S.sales_amount) AS highest_revenue
+FROM
+	gold.fact_sales AS S
+LEFT JOIN
+	gold.dim_customers AS C
+ON 
+	S.customer_key = C.customer_key
+GROUP BY 
+	C.customer_key
+ORDER BY 
+	highest_revenue DESC;
+
+SELECT TOP 3
+	C.customer_key,
+	COUNT(DISTINCT S.order_number) AS Nr_of_orders
+FROM
+	gold.fact_sales AS S
+LEFT JOIN
+	gold.dim_customers AS C
+ON 
+	S.customer_key = C.customer_key
+GROUP BY 
+	C.customer_key
+ORDER BY 
+	Nr_of_orders
