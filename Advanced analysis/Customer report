@@ -1,0 +1,103 @@
+/*
+==============================================================================================
+Customer report
+==============================================================================================
+Purpose:
+    - This report consolidates key customer metrics and behaviors
+
+HIghlights:
+    1.Gathers essential fields such as names, ages, and transaction details.
+    2.Segments customers into categories (VIP, Regular, New) and age groups 
+    3.Aggregates customer-level metrics:
+        -Total orders
+        -Total sales
+        -Total quantity purchased
+        -Total products 
+        -Lifespan 
+    4.Calculates valuable KPIs:
+        -recency
+        -average order value
+        -average monthly spend
+=============================================================================================
+*/
+
+/*-------------------------------------------------------------------------------------------
+1) Base query: Retrieves core columns from table
+-------------------------------------------------------------------------------------------*/
+CREATE VIEW gold.report_customers AS
+WITH base_query AS (
+SELECT
+    S.order_number,
+    S.product_key,
+    S.order_date,
+    S.sales_amount,
+    S.quantity,
+    C.customer_key,
+    C.customer_number,
+    CONCAT(C.first_name,'-',C.last_name) AS Full_name,
+    DATEDIFF(YEAR,C.birthdate,GETDATE()) AS age
+FROM    
+    gold.fact_sales AS S
+LEFT JOIN
+    gold.dim_customers AS C
+ON
+    S.customer_key = C.customer_key 
+WHERE
+    S.order_date IS NOT NULL
+),
+Customer_aggregations AS(
+SELECT
+    customer_key,
+    customer_number,
+    age,
+    Full_name,
+    COUNT(DISTINCT order_number) AS Total_orders,
+    SUM(sales_amount) AS Total_sales,
+    COUNT(quantity) AS Total_quantity,
+    COUNT(DISTINCT product_key) AS Total_products,
+    MAX(order_date) AS last_order,
+    DATEDIFF(MONTH, MIN(order_date),MAX(order_date)) AS Lifespan
+FROM    
+    base_query
+GROUP BY
+    customer_key,
+    customer_number,
+    age,
+    Full_name
+)
+
+SELECT
+    customer_key,
+    customer_number,
+    Full_name,
+    age,
+    CASE 
+        WHEN age < 20 THEN 'Under 20'
+        WHEN age BETWEEN 20 AND 29 THEN '20-29'
+        WHEN age BETWEEN 30 AND 39 THEN '30-39'
+        WHEN age BETWEEN 40 AND 49 THEN '40-49'
+        ELSE '50 and Above'
+    END AS age_seg,
+    CASE
+        WHEN Lifespan> 12 AND Total_sales > 5000 THEN 'VIP'
+        WHEN Lifespan > 12 AND Total_sales <= 5000 THEN 'Regular'
+        ELSE 'New'
+    END AS Segmentantion ,
+    last_order,
+    DATEDIFF(MONTH,last_order,GETDATE()) AS Recency,
+    Total_orders,
+    Total_products,
+    Total_sales,
+    Total_quantity,
+-- Compute average order value
+    CASE 
+        WHEN Total_orders = 0 THEN 0
+        ELSE CAST(Total_sales AS FLOAT)/Total_orders 
+    END AS AVO,
+--Compute average monthly spend
+    CASE
+        WHEN Lifespan = 0 THEN Total_sales
+        ELSE Total_sales/Lifespan
+    END AS Average_monthly_spend
+FROM    
+    Customer_aggregations
