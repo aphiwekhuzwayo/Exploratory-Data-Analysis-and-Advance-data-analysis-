@@ -1,0 +1,22 @@
+/*
+==============================================================================
+Dimension Exploration
+==============================================================================
+Script Purpose:
+    This script is to identify the unique values in each dimension, which helps
+ 	in recognizing how data might be grouped or segemented.
+ */
+
+--Explore all countries our customers come from 
+SELECT	DISTINCT
+	country
+FROM
+	gold.dim_customers
+
+--Explore all categories"The major divisions", subcategory and the products  
+SELECT	DISTINCT
+	category,
+	subcategory,
+	product_name
+FROM
+	gold.dim_products
