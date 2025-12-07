@@ -1,8 +1,9 @@
-# Exploratory-Data-Analysis-and-Advance-data-analysis-
+#📊 Exploratory Data Analysis & Advanced SQL Data Analysis
 
-This project showcases a complete workflow for Exploratory Data Analysis (EDA) and Advanced SQL analytics using Microsoft SQL Server. It includes database creation, schema setup, exploratory queries, cumulative insights, ranking logic, part-to-whole analysis, performance analysis, and advanced business reporting such as Customer and Product reports. The objective is to demonstrate strong SQL proficiency, analytical thinking, and the ability to extract business-ready insights from raw transactional data.
+This project showcases a complete workflow for Exploratory Data Analysis (EDA) and Advanced SQL analytics using Microsoft SQL Server. It includes database creation, schema setup, exploratory queries, cumulative insights, ranking logic, part-to-whole analysis, performance analysis, and advanced business reporting such as Customer and Product reports.
+The goal is to demonstrate strong SQL proficiency, analytical thinking, and the ability to turn raw transactional data into business-ready insights.
 
-Tech Stack
+🛠️ Tech Stack
 
 Microsoft SQL Server
 
@@ -10,11 +11,11 @@ T-SQL Querying
 
 Window Functions (RANK, ROW_NUMBER, PARTITION BY)
 
-Time-based and cumulative analytics
+Time-based & cumulative analytics
 
 Business reporting logic
 
-Project Structure
+📁 Project Structure
 Exploratory-Data-Analysis-and-Advance-data-analysis/
 │
 ├── EDA/
@@ -34,102 +35,182 @@ Exploratory-Data-Analysis-and-Advance-data-analysis/
     ├── Performance analysis
     └── Product Report
 
-Exploratory Data Analysis (EDA)
+🔍 Exploratory Data Analysis (EDA)
 
-The EDA section contains SQL scripts designed to understand the structure, behavior, and patterns within the dataset.
+The EDA section contains SQL scripts designed to understand the structure, patterns, and behavior of the dataset.
 
-Database Exploration:
-Analyzes tables, schemas, keys, data types, row counts, and detects data quality issues such as missing values or duplicates.
+🧱 Database Exploration
 
-Dimension Exploration:
-Focuses on categorical fields such as products, customers, categories, locations, and looks at relationships between entities.
+Examines schemas, tables, primary keys, foreign keys, data types
 
-Measures Exploration:
-Examines numeric metrics, distribution ranges, min/max values, averages, and detects unusual variations.
+Checks row counts & data quality (nulls, duplicates, outliers)
 
-Date Exploration:
-Looks at ordering patterns across days, months, and years, identifying seasonality and time-based insights.
+🏷️ Dimension Exploration
 
-Change Over Time Analysis:
-Tracks how key metrics evolve across time periods, highlighting trends and comparisons over months or years.
+Analyzes categorical fields (products, customers, categories, locations)
 
-Magnitude Analysis:
-Quantifies which customers, products, or regions contribute most to revenue or volume.
+Understands hierarchical relationships
 
-Cumulative Analysis:
-Uses window functions to calculate running totals, cumulative revenue, month-to-date and year-to-date metrics.
+📏 Measures Exploration
 
-Ranking Analysis:
-Ranks customers, products, or categories to identify top performers, bottom performers, and outliers.
+Examines numeric fields
 
-Advanced SQL Analysis
+Evaluates min, max, mean, distribution & unusual patterns
 
-This section contains advanced SQL scripts designed to build business-ready analytical reports.
+📆 Date Exploration
 
-Customer Report
+Identifies trends across days, months, years
 
-This report consolidates key customer metrics and behaviors.
+Detects seasonality & recurring patterns
 
-Highlights:
+📈 Change Over Time Analysis
 
-Extracts essential fields such as customer names, ages, and transaction history.
+Tracks how key metrics evolve
 
-Segments customers into VIP, Regular, and New categories.
+Compares month-to-month or year-to-year performance
 
-Groups customers into age ranges.
+⚖️ Magnitude Analysis
 
-Aggregates customer-level metrics including total orders, total sales, total quantity purchased, total products bought, and customer lifespan.
+Identifies high-impact entities
 
-Computes KPIs such as recency, average order value (AOV), and average monthly spend.
+Ranks contribution to revenue, quantity, etc.
 
-Product Report
+➕ Cumulative Analysis
 
-This analysis provides a full breakdown of product-level performance.
+Running totals
 
-Highlights:
+MTD, YTD, rolling revenue
 
-Retrieves product details including product name, category, subcategory, and cost.
+Window function-based insights
 
-Segments products into High-performing, Mid-range, and Low-performing groups.
+🏅 Ranking Analysis
 
-Aggregates product-level metrics such as total orders, total sales, total quantity sold, total customers (unique), and product lifespan in months.
+Uses RANK(), DENSE_RANK(), ROW_NUMBER()
 
-Calculates KPIs including recency, average order revenue (AOR), and average monthly revenue.
+Finds top/bottom performers
 
-Part-to-Whole Analysis
+Identifies outliers & priority targets
 
-Evaluates contribution percentages of categories, customers, or products toward overall metrics. Useful for identifying key drivers of sales or revenue concentration.
+⚡ Advanced SQL Analysis
 
-Performance Analysis
+These scripts turn data into business-level reports suitable for BI dashboards and decision-making.
 
-Analyzes category- or group-level performance trends, highlighting strong areas, weaknesses, and opportunities for improvement using ranking, aggregation, and comparative logic.
+👤 Customer Report
 
-How to Run
+A complete breakdown of customer behavior and value.
 
-Clone the repository.
+✨ Highlights
 
-Run the “Create Database and Schemas” script to initialize your database.
+Pulls essential customer attributes (name, age, transactions)
 
-Load your dataset.
+Segments customers into VIP, Regular, New
 
-Run the EDA scripts in any order based on what you want to investigate.
+Groups customers by age
 
-Run the Advanced analysis scripts to generate business reports.
+Customer-level metrics:
 
-Export results or use them later to build dashboards.
+Total orders
 
-Future Improvements
+Total sales
 
-Add Power BI dashboards.
+Total quantity purchased
 
-Add Python EDA notebooks using Pandas.
+Total products bought
 
-Add correlation and statistical analysis.
+Customer lifespan
 
-Create stored procedures for automated reporting.
+KPIs:
 
-Implement CTE-based models for analytics engineering workflows.
+Recency
 
-Why This Project Matters
+Average Order Value (AOV)
 
-This project demonstrates the ability to structure SQL queries effectively, investigate datasets thoroughly, apply analytical thinking, build cumulative and ranking logic, and produce business-ready insights using MS SQL Server. It highlights both foundational EDA skills and advanced SQL analysis suitable for real-world analytics and BI environments
+Average Monthly Spend
+
+📦 Product Report
+
+Detailed analysis of product performance.
+
+✨ Highlights
+
+Retrieves name, category, subcategory, cost
+
+Segments products into High-performing, Mid-range, Low-performing
+
+Product-level metrics:
+
+Total orders
+
+Total sales
+
+Total quantity sold
+
+Unique customer count
+
+Product lifespan in months
+
+KPIs:
+
+Recency
+
+Average Order Revenue (AOR)
+
+Average Monthly Revenue
+
+🥧 Part-to-Whole Analysis
+
+Evaluates contribution of categories, customers, or products
+
+Helps identify the biggest drivers of revenue and sales
+
+Useful for prioritization & resource allocation
+
+📊 Performance Analysis
+
+Compares performance across groups, categories, or time periods
+
+Uses ranking & aggregations
+
+Identifies strong areas, weak areas, and growth opportunities
+
+🚀 How to Run
+
+Clone the repository
+
+Run the Create Database and Schemas script
+
+Load your dataset
+
+Run EDA scripts in any order
+
+Run Advanced analysis scripts for business insights
+
+Use results for dashboards (Power BI coming soon)
+
+🔮 Future Improvements
+
+Power BI dashboards
+
+Python EDA (Pandas)
+
+Correlation & statistical analysis
+
+Automated stored procedures
+
+Analytics-engineering-style CTE models
+
+⭐ Why This Project Matters
+
+This project demonstrates the ability to:
+
+Structure SQL analyses professionally
+
+Investigate datasets deeply
+
+Build advanced analytical logic
+
+Calculate complex KPIs
+
+Deliver insights directly from SQL
+
+Combine EDA + advanced business reporting in one structured project
