@@ -1,0 +1,53 @@
+/*
+===========================================================================
+Performance analysis
+===========================================================================
+Script Purpose:
+    This script compares the current value to a target value which helps us
+    measure success and comapare performance
+*/
+
+/* Analyzing the yearly performance of produscts by comparing each product's
+    sales to both its average sales performance and previous years sales
+*/
+WITH Performance_analysis AS (
+SELECT
+    YEAR(S.order_date) AS YEAR,
+    P.product_name,
+    SUM(S.sales_amount) AS Total_sales
+FROM    
+    gold.fact_sales AS S
+LEFT JOIN
+    gold.dim_products AS P
+ON 
+    S.product_key = P.product_key
+WHERE 
+    S.order_date IS NOT NULL
+GROUP BY
+    P.product_name, YEAR(S.order_date)
+
+)
+
+SELECT
+    [YEAR],
+    product_name,
+    Total_sales,
+    AVG(Total_sales) OVER (PARTITION BY product_name ) AS avg,
+    Total_sales - AVG(Total_sales) OVER (PARTITION BY product_name ) AS diff_avg,
+    CASE    
+        WHEN (Total_sales - AVG(Total_sales) OVER (PARTITION BY product_name )) > 0 THEN 'Above average'
+        WHEN (Total_sales - AVG(Total_sales) OVER (PARTITION BY product_name )) < 0 THEN 'Below average'
+        ELSE 'AVG'
+    END AS avg_change,
+-- Year - over - year Analysis
+    LAG(Total_sales) OVER (PARTITION BY product_name ORDER BY YEAR) AS previous_year_sales,
+    Total_sales - LAG(Total_sales) OVER (PARTITION BY product_name ORDER BY YEAR) AS Diff_sales,
+        CASE    
+        WHEN (Total_sales - LAG(Total_sales) OVER (PARTITION BY product_name ORDER BY YEAR )) > 0 THEN 'Increase'
+        WHEN (Total_sales - LAG(Total_sales) OVER (PARTITION BY product_name ORDER BY YEAR )) < 0 THEN 'Decrease'
+        ELSE 'NO CHANGE'
+    END AS Diff_change
+FROM   
+    Performance_analysis
+ORDER BY
+    product_name, [YEAR]  
